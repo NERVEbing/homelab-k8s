@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ddns-go
+spec:
+  ports:
+    - port: 80
+      targetPort: 9876
+  selector:
+    app: ddns-go
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ddns-go
+spec:
+  selector:
+    matchLabels:
+      app: ddns-go
+  serviceName: ddns-go
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ddns-go
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: ddns-go
+          image: jeessy/ddns-go:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 0.2
+              memory: 200Mi
+            requests:
+              cpu: 0.1
+              memory: 100Mi
+          ports:
+            - containerPort: 9876
+          volumeMounts:
+            - name: k8s
+              subPath: ddns-go/config
+              mountPath: /root
+      volumes:
+        - name: k8s
+          hostPath:
+            path: /mnt/data/k8s

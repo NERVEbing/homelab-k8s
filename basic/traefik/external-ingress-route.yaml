@@ -1,0 +1,71 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: external-ingress-route-http
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`tv.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: external-middleware-redirect-https
+      services:
+        - kind: Service
+          name: truenas-jellyfin
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: external-ingress-route-https
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`tv.lvlv.fun`)
+      services:
+        - kind: Service
+          name: truenas-jellyfin
+          passHostHeader: true
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              secure: true
+              sameSite: none
+          strategy: RoundRobin
+          weight: 10
+    - kind: Rule
+      match: Host(`file.lvlv.fun`)
+      services:
+        - kind: Service
+          name: truenas-zfile
+          passHostHeader: true
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              secure: true
+              sameSite: none
+          strategy: RoundRobin
+          weight: 10
+  tls:
+    secretName: lvlv.fun-tls
+    domains:
+      - main: lvlv.fun
+        sans:
+          - "*.lvlv.fun"

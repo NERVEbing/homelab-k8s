@@ -1,0 +1,113 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: internal-ingress-route-http
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`ddns-go.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: internal-middleware-redirect-https
+      services:
+        - kind: Service
+          name: ddns-go
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+    - kind: Rule
+      match: Host(`meshcommander.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: internal-middleware-redirect-https
+      services:
+        - kind: Service
+          name: meshcommander
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+    - kind: Rule
+      match: Host(`jd-qinglong.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: internal-middleware-redirect-https
+      services:
+        - kind: Service
+          name: jd-qinglong
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: internal-ingress-route-https
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`ddns-go.lvlv.fun`)
+      services:
+        - kind: Service
+          name: ddns-go
+          passHostHeader: true
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              secure: true
+              sameSite: none
+          strategy: RoundRobin
+          weight: 10
+    - kind: Rule
+      match: Host(`meshcommander.lvlv.fun`)
+      services:
+        - kind: Service
+          name: meshcommander
+          passHostHeader: true
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              secure: true
+              sameSite: none
+          strategy: RoundRobin
+          weight: 10
+    - kind: Rule
+      match: Host(`jd-qinglong.lvlv.fun`)
+      services:
+        - kind: Service
+          name: jd-qinglong
+          passHostHeader: true
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              secure: true
+              sameSite: none
+          strategy: RoundRobin
+          weight: 10
+  tls:
+    secretName: lvlv.fun-tls
+    domains:
+      - main: lvlv.fun
+        sans:
+          - "*.lvlv.fun"

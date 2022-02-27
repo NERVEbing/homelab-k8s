@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+spec:
+  ports:
+    - port: 9200
+      targetPort: 9200
+      name: http
+    - port: 9300
+      targetPort: 9300
+      name: tcp
+  selector:
+    app: elasticsearch
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
+  serviceName: elasticsearch
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 4
+              memory: 32Gi
+            requests:
+              cpu: 0.5
+              memory: 500Mi
+          env:
+            - name: ES_JAVA_OPTS
+              value: "-Xms1024m -Xmx8192m"
+          ports:
+            - containerPort: 9200
+            - containerPort: 9300
+          volumeMounts:
+            - name: elasticsearch
+              subPath: data
+              mountPath: /usr/share/elasticsearch/data
+            - name: elasticsearch
+              subPath: plugins
+              mountPath: /usr/share/elasticsearch/plugins
+            - name: config
+              subPath: elasticsearch.yml
+              mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+      volumes:
+        - name: elasticsearch
+          hostPath:
+            path: /mnt/data/k8s/elasticsearch
+        - name: config
+          configMap:
+            name: elasticsearch-config
