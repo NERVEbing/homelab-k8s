@@ -18,6 +18,30 @@ spec:
           responseForwarding:
             flushInterval: 1ms
           scheme: http
+    - kind: Rule
+      match: Host(`file.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: external-middleware-redirect-https
+      services:
+        - kind: Service
+          name: truenas-zfile
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+    - kind: Rule
+      match: Host(`jd.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: external-middleware-redirect-https
+      services:
+        - kind: Service
+          name: jd-jdx
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
