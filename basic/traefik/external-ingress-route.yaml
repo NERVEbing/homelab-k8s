@@ -63,6 +63,24 @@ spec:
               sameSite: none
           strategy: RoundRobin
           weight: 10
+    - kind: Rule
+      match: Host(`jd.lvlv.fun`) && !Path(`/admin`)
+      services:
+        - kind: Service
+          name: jd-jdx
+          passHostHeader: true
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              secure: true
+              sameSite: none
+          strategy: RoundRobin
+          weight: 10
   tls:
     secretName: lvlv.fun-tls
     domains:
