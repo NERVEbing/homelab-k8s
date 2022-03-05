@@ -31,6 +31,18 @@ spec:
             flushInterval: 1ms
           scheme: http
     - kind: Rule
+      match: Host(`speedtest.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: external-middleware-redirect-https
+      services:
+        - kind: Service
+          name: truenas-speedtest-x
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+    - kind: Rule
       match: Host(`jd.lvlv.fun`)
       priority: 10
       middlewares:
@@ -74,6 +86,24 @@ spec:
       services:
         - kind: Service
           name: truenas-zfile
+          passHostHeader: true
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              secure: true
+              sameSite: none
+          strategy: RoundRobin
+          weight: 10
+    - kind: Rule
+      match: Host(`speedtest.lvlv.fun`)
+      services:
+        - kind: Service
+          name: truenas-speedtest-x
           passHostHeader: true
           port: 80
           responseForwarding:

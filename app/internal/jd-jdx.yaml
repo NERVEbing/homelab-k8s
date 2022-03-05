@@ -27,7 +27,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: jd-jdx
-          image: aaron8/jdx:0.8
+          image: registry.cn-hangzhou.aliyuncs.com/yiidii-hub/jdx:v0.2.1
           imagePullPolicy: IfNotPresent
           resources:
             limits:

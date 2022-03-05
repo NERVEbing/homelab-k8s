@@ -13,6 +13,6 @@ metadata:
   name: truenas-jellyfin
 subsets:
   - addresses:
-      - ip: 192.168.4.20
+      - ip: 192.168.3.20
     ports:
       - port: 9000
