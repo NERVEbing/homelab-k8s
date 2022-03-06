@@ -52,8 +52,11 @@ spec:
               subPath: jd-qinglong/ql/repo
               mountPath: /ql/repo
             - name: k8s
-              subPath: jd-qinglong/ql/raw
-              mountPath: /ql/raw
+              subPath: jd-qinglong/ql/scripts
+              mountPath: /ql/scripts
+            - name: k8s
+              subPath: jd-qinglong/ql/deps
+              mountPath: /ql/deps
       volumes:
         - name: k8s
           hostPath:
