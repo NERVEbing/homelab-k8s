@@ -1,33 +1,31 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jd-jdx
+  name: bilibili-helper
 spec:
-  ports:
-    - port: 80
-      targetPort: 80
+  clusterIP: None
   selector:
-    app: jd-jdx
+    app: bilibili-helper
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: jd-jdx
+  name: bilibili-helper
 spec:
   selector:
     matchLabels:
-      app: jd-jdx
-  serviceName: jd-jdx
+      app: bilibili-helper
+  serviceName: bilibili-helper
   replicas: 1
   template:
     metadata:
       labels:
-        app: jd-jdx
+        app: bilibili-helper
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-        - name: jd-jdx
-          image: registry.cn-hangzhou.aliyuncs.com/yiidii-hub/jdx:v0.2.2
+        - name: bilibili-helper
+          image: superng6/bilibili-helper:latest
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -36,12 +34,10 @@ spec:
             requests:
               cpu: 0.5
               memory: 200Mi
-          ports:
-            - containerPort: 80
           volumeMounts:
             - name: k8s
-              subPath: jd-jdx/config
-              mountPath: /jdx/config
+              subPath: bilibili-helper/config
+              mountPath: /config
       volumes:
         - name: k8s
           hostPath:
