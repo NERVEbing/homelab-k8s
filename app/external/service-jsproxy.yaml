@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jsproxy
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: jsproxy
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jsproxy
+spec:
+  selector:
+    matchLabels:
+      app: jsproxy
+  serviceName: jsproxy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jsproxy
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: jsproxy
+          image: ubuntu:18.04
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1
+              memory: 2Gi
+            requests:
+              cpu: 0.5
+              memory: 200Mi
+          ports:
+            - containerPort: 8080
+          command: ["/bin/bash", "-c", "--"]
+          args: [
+              "
+              cd /data/server;
+              ./run.sh;
+              while true; do sleep 3600; done;
+              ",
+            ]
+          volumeMounts:
+            - name: k8s
+              subPath: jsproxy/data
+              mountPath: /data
+      volumes:
+        - name: k8s
+          hostPath:
+            path: /mnt/data/k8s
