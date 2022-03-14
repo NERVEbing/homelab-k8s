@@ -59,7 +59,7 @@ spec:
       volumes:
         - name: elasticsearch
           hostPath:
-            path: /mnt/data/k8s/elasticsearch
+            path: /mnt/work/k8s/elasticsearch
         - name: config
           configMap:
             name: elasticsearch-config

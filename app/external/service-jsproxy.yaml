@@ -53,4 +53,4 @@ spec:
       volumes:
         - name: k8s
           hostPath:
-            path: /mnt/data/k8s
+            path: /mnt/work/k8s

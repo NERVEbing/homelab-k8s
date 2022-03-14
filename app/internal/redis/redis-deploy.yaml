@@ -57,7 +57,7 @@ spec:
       volumes:
         - name: redis
           hostPath:
-            path: /mnt/data/k8s/redis
+            path: /mnt/work/k8s/redis
         - name: config
           configMap:
             name: redis-config
