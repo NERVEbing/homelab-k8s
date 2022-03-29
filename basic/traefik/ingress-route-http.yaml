@@ -102,3 +102,11 @@ spec:
         - kind: Service
           name: qbittorrent
           port: 80
+    - kind: Rule
+      match: Host(`pan.lvlv.fun`)
+      middlewares:
+        - name: middleware-redirect-https
+      services:
+        - kind: Service
+          name: pan-index
+          port: 80

@@ -114,3 +114,10 @@ spec:
           name: qbittorrent
           passHostHeader: true
           port: 80
+    - kind: Rule
+      match: Host(`pan.lvlv.fun`)
+      services:
+        - kind: Service
+          name: pan-index
+          passHostHeader: true
+          port: 80
