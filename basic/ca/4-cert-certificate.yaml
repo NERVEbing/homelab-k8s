@@ -9,4 +9,3 @@ spec:
     name: cloudflare-issuer
   dnsNames:
     - "*.lvlv.fun"
-    - lvlv.fun

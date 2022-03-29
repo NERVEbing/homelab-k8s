@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr
+spec:
+  ports:
+    - port: 80
+      targetPort: 7878
+  selector:
+    app: radarr
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: radarr
+spec:
+  selector:
+    matchLabels:
+      app: radarr
+  serviceName: radarr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1
+              memory: 2Gi
+            requests:
+              cpu: 0.5
+              memory: 200Mi
+          env:
+            - name: TZ
+              value: Aisa/Shanghai
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - containerPort: 7878
+          volumeMounts:
+            - name: k8s
+              subPath: radarr/config
+              mountPath: /config
+            - name: data
+              subPath: media/movie
+              mountPath: /movies
+            - name: store
+              subPath: download
+              mountPath: /downloads
+      volumes:
+        - name: k8s
+          hostPath:
+            path: /mnt/work/k8s
+        - name: data
+          hostPath:
+            path: /mnt/data
+        - name: store
+          hostPath:
+            path: /mnt/store

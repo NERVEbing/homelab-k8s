@@ -13,7 +13,7 @@ spec:
         - name: external-middleware-redirect-https
       services:
         - kind: Service
-          name: truenas-jellyfin
+          name: emby
           port: 80
           responseForwarding:
             flushInterval: 1ms
@@ -25,7 +25,7 @@ spec:
         - name: external-middleware-redirect-https
       services:
         - kind: Service
-          name: truenas-zfile
+          name: zfile
           port: 80
           responseForwarding:
             flushInterval: 1ms
@@ -37,7 +37,7 @@ spec:
         - name: external-middleware-redirect-https
       services:
         - kind: Service
-          name: truenas-speedtest-x
+          name: speedtest-x
           port: 80
           responseForwarding:
             flushInterval: 1ms
@@ -54,18 +54,18 @@ spec:
           responseForwarding:
             flushInterval: 1ms
           scheme: http
-    # - kind: Rule
-    #   match: Host(`proxy.lvlv.fun`)
-    #   priority: 10
-    #   middlewares:
-    #     - name: external-middleware-redirect-https
-    #   services:
-    #     - kind: Service
-    #       name: jsproxy
-    #       port: 80
-    #       responseForwarding:
-    #         flushInterval: 1ms
-    #       scheme: http
+    - kind: Rule
+      match: Host(`proxy.lvlv.fun`)
+      priority: 10
+      middlewares:
+        - name: external-middleware-redirect-https
+      services:
+        - kind: Service
+          name: jsproxy
+          port: 80
+          responseForwarding:
+            flushInterval: 1ms
+          scheme: http
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -79,7 +79,7 @@ spec:
       match: Host(`tv.lvlv.fun`)
       services:
         - kind: Service
-          name: truenas-jellyfin
+          name: emby
           passHostHeader: true
           port: 80
           responseForwarding:
@@ -97,7 +97,7 @@ spec:
       match: Host(`file.lvlv.fun`)
       services:
         - kind: Service
-          name: truenas-zfile
+          name: zfile
           passHostHeader: true
           port: 80
           responseForwarding:
@@ -115,7 +115,7 @@ spec:
       match: Host(`speedtest.lvlv.fun`)
       services:
         - kind: Service
-          name: truenas-speedtest-x
+          name: speedtest-x
           passHostHeader: true
           port: 80
           responseForwarding:
@@ -130,7 +130,7 @@ spec:
           strategy: RoundRobin
           weight: 10
     - kind: Rule
-      match: Host(`jd.lvlv.fun`) && !Path(`/admin`)
+      match: Host(`jd.lvlv.fun`)
       services:
         - kind: Service
           name: jd-jdx

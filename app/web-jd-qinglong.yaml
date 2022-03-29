@@ -27,7 +27,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: jd-qinglong
-          image: whyour/qinglong:latest
+          image: whyour/qinglong:2.11
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -43,23 +43,23 @@ spec:
               subPath: jd-qinglong/ql/config
               mountPath: /ql/config
             - name: k8s
+              subPath: jd-qinglong/ql/db
+              mountPath: /ql/db
+            - name: k8s
+              subPath: jd-qinglong/ql/deps
+              mountPath: /ql/deps
+            - name: k8s
               subPath: jd-qinglong/ql/log
               mountPath: /ql/log
             - name: k8s
-              subPath: jd-qinglong/ql/db
-              mountPath: /ql/db
+              subPath: jd-qinglong/ql/raw
+              mountPath: /ql/raw
             - name: k8s
               subPath: jd-qinglong/ql/repo
               mountPath: /ql/repo
             - name: k8s
               subPath: jd-qinglong/ql/scripts
               mountPath: /ql/scripts
-            - name: k8s
-              subPath: jd-qinglong/ql/raw
-              mountPath: /ql/raw
-            - name: k8s
-              subPath: jd-qinglong/ql/deps
-              mountPath: /ql/deps
       volumes:
         - name: k8s
           hostPath:

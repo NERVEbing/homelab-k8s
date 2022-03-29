@@ -1,0 +1,116 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingress-route-https
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    secretName: lvlv.fun-tls
+    domains:
+      - main: lvlv.fun
+        sans:
+          - "*.lvlv.fun"
+  routes:
+    # - kind: Rule
+    #   match: Host(`tv.lvlv.fun`)
+    #   services:
+    #     - kind: Service
+    #       name: emby
+    #       passHostHeader: true
+    #       port: 80
+    #       responseForwarding:
+    #         flushInterval: 1ms
+    #       scheme: http
+    #       sticky:
+    #         cookie:
+    #           httpOnly: true
+    #           name: cookie
+    #           secure: true
+    #           sameSite: none
+    #       strategy: RoundRobin
+    #       weight: 10
+    - kind: Rule
+      match: Host(`tv.lvlv.fun`)
+      services:
+        - kind: Service
+          name: emby
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`file.lvlv.fun`)
+      services:
+        - kind: Service
+          name: zfile
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`speedtest.lvlv.fun`)
+      services:
+        - kind: Service
+          name: speedtest-x
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`jd.lvlv.fun`)
+      services:
+        - kind: Service
+          name: jd-jdx
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`ql.lvlv.fun`)
+      services:
+        - kind: Service
+          name: jd-qinglong
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`ddns.lvlv.fun`)
+      services:
+        - kind: Service
+          name: ddns-go
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`jackett.lvlv.fun`)
+      services:
+        - kind: Service
+          name: jackett
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`radarr.lvlv.fun`)
+      services:
+        - kind: Service
+          name: radarr
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`sonarr.lvlv.fun`)
+      services:
+        - kind: Service
+          name: sonarr
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`tmm.lvlv.fun`)
+      services:
+        - kind: Service
+          name: tinymediamanager
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`meshcommander.lvlv.fun`)
+      services:
+        - kind: Service
+          name: meshcommander
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`qb.lvlv.fun`)
+      services:
+        - kind: Service
+          name: qbittorrent
+          passHostHeader: true
+          port: 80

@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jackett
+spec:
+  ports:
+    - port: 80
+      targetPort: 9117
+  selector:
+    app: jackett
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jackett
+spec:
+  selector:
+    matchLabels:
+      app: jackett
+  serviceName: jackett
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jackett
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: jackett
+          image: lscr.io/linuxserver/jackett:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1
+              memory: 2Gi
+            requests:
+              cpu: 0.5
+              memory: 200Mi
+          env:
+            - name: TZ
+              value: Aisa/Shanghai
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: AUTO_UPDATE
+              value: "true"
+          ports:
+            - containerPort: 9117
+          volumeMounts:
+            - name: k8s
+              subPath: jackett/config
+              mountPath: /config
+            - name: store
+              subPath: download
+              mountPath: /downloads
+      volumes:
+        - name: k8s
+          hostPath:
+            path: /mnt/work/k8s
+        - name: store
+          hostPath:
+            path: /mnt/store
