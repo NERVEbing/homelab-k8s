@@ -121,3 +121,10 @@ spec:
           name: pan-index
           passHostHeader: true
           port: 80
+    - kind: Rule
+      match: Host(`live.lvlv.fun`)
+      services:
+        - kind: Service
+          name: live-srs
+          passHostHeader: true
+          port: 80
