@@ -8,113 +8,97 @@ spec:
   routes:
     - kind: Rule
       match: Host(`tv.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: emby
           port: 80
     - kind: Rule
       match: Host(`file.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: zfile
           port: 80
     - kind: Rule
       match: Host(`speedtest.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: speedtest-x
           port: 80
     - kind: Rule
       match: Host(`jd.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: jd-jdx
           port: 80
     - kind: Rule
       match: Host(`ql.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: jd-qinglong
           port: 80
     - kind: Rule
       match: Host(`ddns.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: ddns-go
           port: 80
     - kind: Rule
       match: Host(`jackett.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: jackett
           port: 80
     - kind: Rule
       match: Host(`radarr.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: radarr
           port: 80
     - kind: Rule
       match: Host(`sonarr.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: sonarr
           port: 80
     - kind: Rule
       match: Host(`tmm.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: tinymediamanager
           port: 80
     - kind: Rule
       match: Host(`meshcommander.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: meshcommander
           port: 80
     - kind: Rule
       match: Host(`qb.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: qbittorrent
           port: 80
     - kind: Rule
       match: Host(`pan.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
       services:
         - kind: Service
           name: pan-index
           port: 80
     - kind: Rule
-      match: Host(`live.lvlv.fun`)
-      middlewares:
-        - name: middleware-redirect-https
+      match: Host(`srs.lvlv.fun`)
       services:
         - kind: Service
           name: live-srs
+          port: 80
+    - kind: Rule
+      match: Host(`rtmp.lvlv.fun`)
+      services:
+        - kind: Service
+          name: live-rtmp
+          port: 80
+    - kind: Rule
+      match: Host(`live.lvlv.fun`)
+      services:
+        - kind: Service
+          name: live-nginx
           port: 80

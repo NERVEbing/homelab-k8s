@@ -1,0 +1,56 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingress-route-https-outer
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    secretName: lvlv.fun-tls
+    domains:
+      - main: lvlv.fun
+        sans:
+          - "*.lvlv.fun"
+  routes:
+    - kind: Rule
+      match: Host(`tv.lvlv.fun`)
+      services:
+        - kind: Service
+          name: emby
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`file.lvlv.fun`) && !Path(`/login`) && !Path(`/admin`)
+      services:
+        - kind: Service
+          name: zfile
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`speedtest.lvlv.fun`)
+      services:
+        - kind: Service
+          name: speedtest-x
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`jd.lvlv.fun`) && !Path(`/login`) && !Path(`/admin`)
+      services:
+        - kind: Service
+          name: jd-jdx
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`who.lvlv.fun`)
+      services:
+        - kind: Service
+          name: whoami
+          passHostHeader: true
+          port: 80
+    - kind: Rule
+      match: Host(`live.lvlv.fun`)
+      services:
+        - kind: Service
+          name: live-srs
+          passHostHeader: true
+          port: 80

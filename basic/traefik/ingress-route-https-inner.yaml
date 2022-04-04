@@ -1,7 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingress-route-https
+  name: ingress-route-https-inner
 spec:
   entryPoints:
     - websecure
@@ -12,54 +12,10 @@ spec:
         sans:
           - "*.lvlv.fun"
   routes:
-    # - kind: Rule
-    #   match: Host(`tv.lvlv.fun`)
-    #   services:
-    #     - kind: Service
-    #       name: emby
-    #       passHostHeader: true
-    #       port: 80
-    #       responseForwarding:
-    #         flushInterval: 1ms
-    #       scheme: http
-    #       sticky:
-    #         cookie:
-    #           httpOnly: true
-    #           name: cookie
-    #           secure: true
-    #           sameSite: none
-    #       strategy: RoundRobin
-    #       weight: 10
-    - kind: Rule
-      match: Host(`tv.lvlv.fun`)
-      services:
-        - kind: Service
-          name: emby
-          passHostHeader: true
-          port: 80
-    - kind: Rule
-      match: Host(`file.lvlv.fun`)
-      services:
-        - kind: Service
-          name: zfile
-          passHostHeader: true
-          port: 80
-    - kind: Rule
-      match: Host(`speedtest.lvlv.fun`)
-      services:
-        - kind: Service
-          name: speedtest-x
-          passHostHeader: true
-          port: 80
-    - kind: Rule
-      match: Host(`jd.lvlv.fun`)
-      services:
-        - kind: Service
-          name: jd-jdx
-          passHostHeader: true
-          port: 80
     - kind: Rule
       match: Host(`ql.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: jd-qinglong
@@ -67,6 +23,8 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`ddns.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: ddns-go
@@ -74,6 +32,8 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`jackett.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: jackett
@@ -81,6 +41,8 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`radarr.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: radarr
@@ -88,6 +50,8 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`sonarr.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: sonarr
@@ -95,6 +59,8 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`tmm.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: tinymediamanager
@@ -102,6 +68,8 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`meshcommander.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: meshcommander
@@ -109,6 +77,8 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`qb.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: qbittorrent
@@ -116,15 +86,10 @@ spec:
           port: 80
     - kind: Rule
       match: Host(`pan.lvlv.fun`)
+      middlewares:
+        - name: ip-white-list
       services:
         - kind: Service
           name: pan-index
-          passHostHeader: true
-          port: 80
-    - kind: Rule
-      match: Host(`live.lvlv.fun`)
-      services:
-        - kind: Service
-          name: live-srs
           passHostHeader: true
           port: 80
