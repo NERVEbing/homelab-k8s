@@ -85,6 +85,12 @@ spec:
           name: pan-index
           port: 80
     - kind: Rule
+      match: Host(`who.lvlv.fun`)
+      services:
+        - kind: Service
+          name: whoami
+          port: 80
+    - kind: Rule
       match: Host(`srs.lvlv.fun`)
       services:
         - kind: Service
