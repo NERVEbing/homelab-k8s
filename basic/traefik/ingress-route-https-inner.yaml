@@ -18,7 +18,7 @@ spec:
         - name: ip-white-list
       services:
         - kind: Service
-          name: jd-qinglong
+          name: jd-ql
           passHostHeader: true
           port: 80
     - kind: Rule

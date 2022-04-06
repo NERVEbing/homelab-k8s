@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jd-ql
+spec:
+  ports:
+    - port: 80
+      targetPort: 5700
+  selector:
+    app: jd-ql
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jd-ql
+spec:
+  selector:
+    matchLabels:
+      app: jd-ql
+  serviceName: jd-ql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jd-ql
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: jd-ql
+          image: whyour/qinglong:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 4
+              memory: 8Gi
+            requests:
+              cpu: 0.5
+              memory: 200Mi
+          ports:
+            - containerPort: 5700
+          volumeMounts:
+            - name: k8s
+              subPath: jd-ql/data
+              mountPath: /ql/data
+      volumes:
+        - name: k8s
+          hostPath:
+            path: /mnt/work/k8s

@@ -34,7 +34,7 @@ spec:
       match: Host(`ql.lvlv.fun`)
       services:
         - kind: Service
-          name: jd-qinglong
+          name: jd-ql
           port: 80
     - kind: Rule
       match: Host(`ddns.lvlv.fun`)
