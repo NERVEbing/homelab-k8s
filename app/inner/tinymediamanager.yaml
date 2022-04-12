@@ -38,7 +38,7 @@ spec:
               memory: 200Mi
           env:
             - name: TZ
-              value: Aisa/Shanghai
+              value: Asia/Shanghai
             - name: PUID
               value: "1000"
             - name: PGID

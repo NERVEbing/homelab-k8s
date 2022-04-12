@@ -102,3 +102,9 @@ spec:
         - kind: Service
           name: live-rtmp
           port: 80
+    - kind: Rule
+      match: Host(`backup.lvlv.fun`)
+      services:
+        - kind: Service
+          name: duplicati
+          port: 80

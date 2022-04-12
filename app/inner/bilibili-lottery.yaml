@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bilibili-lottery
+spec:
+  clusterIP: None
+  selector:
+    app: bilibili-lottery
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bilibili-lottery
+spec:
+  selector:
+    matchLabels:
+      app: bilibili-lottery
+  serviceName: bilibili-lottery
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bilibili-lottery
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: bilibili-lottery
+          image: shanmite/lottery_auto_docker:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 1
+              memory: 2Gi
+            requests:
+              cpu: 0.5
+              memory: 200Mi
+          env:
+            - name: PUID
+              value: "1026"
+            - name: PGID
+              value: "100"
+            - name: TZ
+              value: Asia/Shanghai
+            - name: CRON
+              value: random
+          volumeMounts:
+            - name: k8s
+              subPath: bilibili-lottery/config/dyids
+              mountPath: /lottery/dyids
+            - name: k8s
+              subPath: bilibili-lottery/config/config.js
+              mountPath: /lottery/my_config.js
+            - name: k8s
+              subPath: bilibili-lottery/config/env.js
+              mountPath: /lottery/env.js
+      volumes:
+        - name: k8s
+          hostPath:
+            path: /mnt/work/k8s
