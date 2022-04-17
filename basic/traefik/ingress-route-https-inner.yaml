@@ -93,12 +93,3 @@ spec:
           name: pan-index
           passHostHeader: true
           port: 80
-    - kind: Rule
-      match: Host(`backup.lvlv.fun`)
-      middlewares:
-        - name: ip-white-list
-      services:
-        - kind: Service
-          name: duplicati
-          passHostHeader: true
-          port: 80

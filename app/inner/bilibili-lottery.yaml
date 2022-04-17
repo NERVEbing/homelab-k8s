@@ -34,15 +34,6 @@ spec:
             requests:
               cpu: 0.5
               memory: 200Mi
-          env:
-            - name: PUID
-              value: "1026"
-            - name: PGID
-              value: "100"
-            - name: TZ
-              value: Asia/Shanghai
-            - name: CRON
-              value: random
           volumeMounts:
             - name: k8s
               subPath: bilibili-lottery/config/dyids

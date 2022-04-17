@@ -34,6 +34,15 @@ spec:
             requests:
               cpu: 0.5
               memory: 200Mi
+          env:
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
+            - name: TZ
+              value: Asia/Shanghai
+            - name: CRON
+              value: "true"
           volumeMounts:
             - name: k8s
               subPath: bilibili-helper/config

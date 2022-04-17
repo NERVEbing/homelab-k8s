@@ -40,8 +40,11 @@ spec:
             - containerPort: 8080
           volumeMounts:
             - name: k8s
-              subPath: zfile/data
-              mountPath: /root/.zfile
+              subPath: zfile/data/db
+              mountPath: /root/.zfile/db
+            - name: k8s
+              subPath: zfile/data/logs
+              mountPath: /root/.zfile/logs
             - name: data
               mountPath: /mnt/data
               readOnly: true
